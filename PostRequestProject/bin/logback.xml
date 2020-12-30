@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+
+	<!-- For assistance related to logback-translator or configuration  -->
+	<!-- files in general, please contact the logback user mailing list -->
+	<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+	<!--                                                                -->
+	<!-- For professional support please see                            -->
+	<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+	<!--                                                                -->
+<configuration>
+
+	<property resource="logback-config.properties" />
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{[yyyy-dd-MM HH:mm:ss.SSS z]} %p %t [%c] - %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="fileLogger"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${log.service.dir}/${log.service.file}</File>
+		<Append>true</Append>
+		<encoder>
+			<pattern>%d{[yyyy-dd-MM HH:mm:ss.SSS z]} %p %t [%c] - %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>100</maxIndex>
+			<FileNamePattern>${log.service.dir}/${log.service.file}.%i</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>15MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>		
+	
+	
+	<appender name="elCongSmsLogger"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${log.elSendConfSms.dir}/${log.elSendConfSms.file}</File>
+		<Append>true</Append>
+		<encoder>
+			<pattern>%d{[yyyy-dd-MM HH:mm:ss.SSS z]} %p %t [%c] - %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>100</maxIndex>
+			<FileNamePattern>${log.elSendConfSms.dir}/${log.elSendConfSms.file}.%i</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>15MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>	
+	
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.apache" level="WARN" />
+	<logger name="org.hibernate.SQL" level="DEBUG" />
+	<logger name="org.hibernate" level="WARN" />
+	
+	<logger name="elCongSmsLogger" level="INFO" additivity="false">
+        <appender-ref ref="elCongSmsLogger"/>
+    </logger>   
+        
+	
+	<root level="DEBUG">
+		<appender-ref ref="fileLogger" />
+	</root>
+	
+</configuration>
